@@ -10,6 +10,8 @@ import java.lang.reflect.Proxy;
 /**
  * @author Jacky
  *
+ *动态代理类
+ *
  */
 public class BookFacadeProxy implements InvocationHandler {
 
@@ -20,13 +22,21 @@ public class BookFacadeProxy implements InvocationHandler {
 	BookFacadeProxy(Object obj){
 		this.obj = obj;
 	}
+	
+	//在invoke方法中，可以添加相应的代码，AOP的基石
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		// TODO Auto-generated method stub
-		System.out.println("before method invoke.");
-		Object result = method.invoke(obj, args);
-		System.out.println("after method invoke.");
+		System.out.println("before method invoke.");//在AOP中，实现日志记录、验证等与具体业务关联不紧密的方法
+		//args方法参数列表
+		if(null != args)
+		{
+			for(int i = 0; i < args.length;i++)
+				System.out.println(args[i]);
+		}	
+		Object result = method.invoke(obj, args);//核心的业务方法
+		System.out.println("after method invoke.");//与业务关联不紧密的方法实现
 		return result;
 	}
 	public Object getProxyObject(){
